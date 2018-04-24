@@ -34,7 +34,7 @@ void reduce_worker::flush()
     temp2.resize( temp.size() + m_data.size() );
     std::merge( temp.begin(), temp.end(), m_data.begin(), m_data.end(), temp2.begin() );
     m_data.swap( temp2 );
-    temp.swap( data_t() );
+    data_t().swap( temp );
 }
 
 void reduce::set_handler( sp_handler_reduce prototype )

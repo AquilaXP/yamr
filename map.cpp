@@ -97,7 +97,7 @@ void map::start()
     // Разделяем файл на равные куски, не заботимся о выравнивании
     auto pos_file_begin_end = split( m_size_file, m_count_map );
     // Очищаем всех рабов
-    m_workers.swap( std::vector<map_worker>() );
+    m_workers.clear();
     
     // Создаем обработчики на основе прототипа
     m_handlers_map.resize( pos_file_begin_end.size() );
