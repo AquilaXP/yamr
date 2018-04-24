@@ -34,7 +34,7 @@ void reduce_worker::flush()
     temp2.resize( temp.size() + m_data.size() );
     std::merge( temp.begin(), temp.end(), m_data.begin(), m_data.end(), temp2.begin() );
     m_data.swap( temp2 );
-    data_t().swap( temp );
+    temp = data_t();
 }
 
 void reduce::set_handler( sp_handler_reduce prototype )
@@ -45,8 +45,8 @@ void reduce::set_handler( sp_handler_reduce prototype )
 void reduce::set_param( uint32_t count_worker )
 {
     m_N = count_worker;
-    m_workers.swap( std::vector<reduce_worker>( m_N ) );
-    m_data.swap( std::vector<data_t>( m_N ) );
+    m_workers = std::vector<reduce_worker>( m_N );
+    m_data = std::vector<data_t>( m_N );
 }
 
 void reduce::move_data( data_t&& data, uint32_t num )

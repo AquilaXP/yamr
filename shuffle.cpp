@@ -10,8 +10,7 @@ class shuffle_worker
 public:
     void run()
     {
-        m_N_data.swap( std::vector<data_t>() );
-        m_N_data.resize( m_N );
+        m_N_data = std::vector<data_t>( m_N );
         std::hash<std::string> hf;
         for( auto& d : m_data )
         {
@@ -46,7 +45,7 @@ public:
         std::swap( temp, m_data );
         m_data.resize( data.size() + temp.size() );
         std::merge( data.begin(), data.end(), temp.begin(), temp.end(), m_data.begin() );
-        data.swap( data_t() );
+        data = data_t();
     }
     data_t& get_data()
     {
@@ -62,7 +61,7 @@ void shuffle::set_param( uint32_t count_map, uint32_t count_reduce )
     m_count_map = count_map;
     m_count_reduce = count_reduce;
 
-    m_datas.swap( std::vector<data_t>( m_count_map ) );
+    m_datas = std::vector<data_t>( m_count_map );
 }
 
 void shuffle::move_data( data_t&& data, uint32_t num )
@@ -78,7 +77,7 @@ void shuffle::start()
         m_workers[i].set_reduce( m_count_reduce );
         m_workers[i].move_data( std::move( m_datas[i] ) );
     }
-    m_datas.swap( std::vector<data_t>() );
+    m_datas = std::vector<data_t>();
 
     pool_thread_t pool_thread;
     pool_thread.reserve( m_workers.size() );
@@ -88,7 +87,7 @@ void shuffle::start()
     }
     wait_pool_thread( pool_thread );
 
-    pool_thread.swap( pool_thread_t() );
+    pool_thread = pool_thread_t();
     pool_thread.reserve( m_count_reduce );
     std::vector<shuffle_merge_worker> workers_merge( m_count_reduce );
     for( uint32_t i = 0; i < workers_merge.size(); ++i )
@@ -104,7 +103,7 @@ void shuffle::start()
     }
     wait_pool_thread( pool_thread );
 
-    m_data_by_reduce.swap( std::vector<data_t>() );
+    m_data_by_reduce = std::vector<data_t>();
     m_data_by_reduce.reserve( m_count_reduce );
     for( auto& w : workers_merge )
     {
