@@ -21,14 +21,9 @@ public:
     {
         if( !m_last.empty() )
         {
-            auto max_len = std::min( line.size(), m_last.size() );
-            for( uint32_t i = 0; i < max_len; ++i )
+            if( m_last == line )
             {
-                if( m_last[i] != line[i] )
-                {
-                    min_len = std::max( i, min_len );
-                    break;
-                }
+                min_len = ( std::max )( static_cast<decltype( min_len )>( m_last.size() + 1 ) , min_len );
             }
         }
 

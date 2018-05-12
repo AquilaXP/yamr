@@ -14,7 +14,6 @@ class handler_map
 public:
     virtual void init( uint32_t id ) = 0;
     virtual void push( std::string&& v ) = 0;
-    virtual void flush() = 0;
     virtual std::shared_ptr<handler_map> clone() = 0;
 
     data_t& get_data();

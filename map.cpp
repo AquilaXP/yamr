@@ -57,7 +57,7 @@ void map_worker::run()
         m_handler->push( std::move( str ) );
     }
     // говорим завершить все
-    m_handler->flush();
+    std::sort( m_handler->get_data().begin(), m_handler->get_data().end() );
 }
 
 void map_worker::correct_begin_end( std::ifstream& f )
