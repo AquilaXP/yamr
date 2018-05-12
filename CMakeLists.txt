@@ -39,6 +39,15 @@ set_target_properties( yamr PROPERTIES
     COMPILE_OPTIONS -Wall
 )
 
+if(UNIX)
+
+set_target_properties( yamr PROPERTIES
+    COMPILE_OPTIONS -pthread
+)
+target_link_libraries( yamr pthread )
+
+endif(UNIX)
+
 install(TARGETS yamr RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
