@@ -28,12 +28,13 @@ int main( int ac, char* av[] )
         uint32_t count_map = std::stol( av[2] );
         uint32_t count_reduce = std::stol( av[3] );
 
+        auto prototype_reduce = std::make_shared<my_handler_reduce>();
         map_reduce mr( file_name, count_map, count_reduce );
         mr.set_map_func( std::make_shared<my_handler_map>() );
-        mr.set_reduce_func( std::make_shared<my_handler_reduce>() );
+        mr.set_reduce_func( prototype_reduce );
         mr.run();
 
-        return ret;
+        prototype_reduce->print_result();
     }
     catch( const std::exception& e )
     {
