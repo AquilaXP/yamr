@@ -17,9 +17,6 @@ public:
     void init( uint32_t id ) override
     {
         m_id = id;
-        std::stringstream ss;
-        ss << "file_" << id << ".txt";
-        f.open( ss.str(), std::ios::binary );
     }
     void move_line( std::string&& line ) override
     {
@@ -32,16 +29,19 @@ public:
         }
 
         m_last = std::move( line );
-        f << m_last << '\n';
     }
     void flush() override
     {
-        f.flush();
         std::stringstream ss;
         ss << "reduce[" << m_id << "] = " << min_len << '\n';
         std::cout << ss.str();
         if( m_parent )
             m_parent->add_result( min_len );
+
+        std::stringstream gen_file_name;
+        gen_file_name << "file_" << m_id << ".txt";
+        std::ofstream f( gen_file_name.str(), std::ios::binary );
+        f << min_len;
     }
     sp_handler_reduce clone() override
     {
@@ -62,6 +62,5 @@ private:
     std::mutex mut;
     my_handler_reduce* m_parent = nullptr;
     uint32_t min_len = 1;
-    std::ofstream f;
     std::string m_last;
 };
